@@ -51,8 +51,8 @@ have_xy = true;
 % Transfer to Mesh structure
 %------------------------------------------------------------------------------
 
-Mobj.nVerts  = mesh.pointNum;
-Mobj.nElems  = mesh.elementNum;
+Mobj.nVerts  = mesh.Nv;
+Mobj.nElems  = mesh.Ne;
 Mobj.nativeCoords = coordinate;
 
 Mobj.have_xy        = have_xy;
@@ -62,8 +62,8 @@ Mobj.y            = y;
 Mobj.ts           = nan;
 Mobj.lon          = lon;
 Mobj.lat          = lat;
-Mobj.h            = mesh.PointDepth;
-Mobj.tri          = mesh.ElementComponent;
+Mobj.h            = mesh.depth;
+Mobj.tri          = mesh.triangle_topology;
 Mobj.have_bath  = true;
 %------------------------------------------------------------------------------
 % write Boundary to Mesh structure
