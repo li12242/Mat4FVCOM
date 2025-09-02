@@ -1,12 +1,6 @@
 # Matlab tools for FVCOM
 
-主要模块
 
-1. PreProcess
-2. PostProcess
-3. Mesh
-4. Time
-5. Utility
 
 ## +PreProcess 前处理相关
 前处理主要目的是生成FVCOM计算输入文件，包括

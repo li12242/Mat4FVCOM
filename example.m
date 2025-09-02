@@ -5,15 +5,15 @@
 % OUTPUT:
 %    FVCOM input files: (casename='test')
 %     ./
-%     ©À©¤©¤ test_cor.dat
-%     ©À©¤©¤ test_dep.dat
-%     ©À©¤©¤ test_grd.dat
-%     ©À©¤©¤ test_obc.dat
-%     ©À©¤©¤ test_obc.nc
-%     ©À©¤©¤ test_river.nc
-%     ©À©¤©¤ test_sigma.dat
-%     ©À©¤©¤ test_spg.dat
-%     ©¸©¤©¤ test_tsobc.nc
+%     â”œâ”€â”€ test_cor.dat
+%     â”œâ”€â”€ test_dep.dat
+%     â”œâ”€â”€ test_grd.dat
+%     â”œâ”€â”€ test_obc.dat
+%     â”œâ”€â”€ test_obc.nc
+%     â”œâ”€â”€ test_river.nc
+%     â”œâ”€â”€ test_sigma.dat
+%     â”œâ”€â”€ test_spg.dat
+%     â””â”€â”€ test_tsobc.nc
 %
 % EXAMPLE USAGE
 %

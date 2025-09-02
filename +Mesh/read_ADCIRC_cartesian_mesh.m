@@ -38,7 +38,7 @@ coordinate = 'cartesian';
 % Read the mesh from the fort14 file
 %------------------------------------------------------------------------------
 
-mesh = FVCOM.smsFort14(filepath);
+mesh = AdcircFile14(filepath);
 x = mesh.PointPositionXY(:,1); y = mesh.PointPositionXY(:,2);
 have_xy = true;
 %------------------------------------------------------------------------------

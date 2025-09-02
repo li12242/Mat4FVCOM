@@ -29,13 +29,13 @@ subname = 'write_FVCOM_sponge';
 global ftbverbose 
 if(ftbverbose)
   fprintf('\n'); fprintf(['begin : ' subname '\n']);
-end;
+end
 filename = [casename, '_spg.dat'];
 
 %------------------------------------------------------------------------------
 % Dump the file
 %------------------------------------------------------------------------------
-if(ftbverbose); fprintf('writing FVCOM spongefile %s\n',filename); end;
+if(ftbverbose); fprintf('writing FVCOM spongefile %s\n',filename); end
 fid = fopen(filename,'w');
 
 if(Mobj.nSponge==0)
@@ -47,12 +47,12 @@ else
         % if you have a variable sponge radius
         for j=1:Mobj.nSpongeNodes(i)
             fprintf(fid,'%d %f %f \n',Mobj.sponge_nodes{i}(j),Mobj.sponge_rad{i}(j),Mobj.sponge_fac(i));
-        end;
-	end;
-end;
+        end
+	end
+end
 fclose(fid);
 		
 if(ftbverbose)
   fprintf(['end   : ' subname '\n'])
-end;
+end
 

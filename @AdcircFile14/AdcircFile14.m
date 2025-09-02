@@ -4,7 +4,7 @@ classdef AdcircFile14 < handle
         Nv % number of vertex
         Ne % number of element
         coordiantes % vertex coordinates
-        depth % wather depth at vertex
+        bathymetry % bathymetry elevation at vertex
         triangle_topology % vertex index in each triangle element
         boundary % structure with two fields: open and land each field is a
         % cell array, each cell contains a vector of vertex indices
@@ -34,12 +34,12 @@ classdef AdcircFile14 < handle
             obj.Ne = data(1);
             obj.Nv = data(2);
 
-            %% read vertex coordinates and depth
+            %% read vertex coordinates and bathymetry
             coordinates = fscanf(file_h, '%d %f %f %f\n', [4, obj.Nv]);
             coordinates = coordinates';
 
             obj.coordiantes = coordinates(:, [2, 3]);
-            obj.depth = coordinates(:, 4);
+            obj.bathymetry = coordinates(:, 4);
 
             %% read mesh topology of triangle elements
             tri_topology = fscanf(file_h, '%d %d %d %d %d\n', [5, obj.Ne]);
