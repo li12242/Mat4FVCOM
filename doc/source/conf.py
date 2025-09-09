@@ -14,7 +14,7 @@ release = 'v1'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
-matlab_src_dir = os.path.abspath('../src')
+matlab_src_dir = os.path.abspath('../../')
 
 extensions = [
     'sphinxcontrib.matlab', 

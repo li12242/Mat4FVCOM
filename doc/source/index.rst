@@ -16,11 +16,11 @@ documentation for details.
    :caption: Contents:
 
 
-@MatFVCOM
+.. module:: src
+
+MatFVCOM
 +++++++++
-
-.. module:: @MatFVCOM
-
-.. autoclass:: MatFVCOM
+  
+.. autoclass:: src.@MatFVCOM
    :members:
    :show-inheritance:

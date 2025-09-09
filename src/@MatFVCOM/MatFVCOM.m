@@ -1,11 +1,11 @@
-%MATFVCOM A class for handling FVCOM data and operations.
-%   This class provides methods and properties to interact with FVCOM data,
-%   enabling users to perform various operations and analyses on FVCOM datasets.
-%
-%   The class inherits from the 'handle' class, meaning objects of this class
-%   are passed by reference.
-%
 classdef MatFVCOM < handle
+  % MATFVCOM A class for handling FVCOM data and operations.
+  %   This class provides methods and properties to interact with FVCOM data,
+  %   enabling users to perform various operations and analyses on FVCOM datasets.
+  %
+  %   The class inherits from the 'handle' class, meaning objects of this class
+  %   are passed by reference.
+  %
 
   properties
     casename % case name
