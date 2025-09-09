@@ -1,15 +1,17 @@
 %------------------------------------------------------------------------------
 % write FVCOM input files
 %------------------------------------------------------------------------------
-function write_to_file(obj, input_folder)
+function write_to_file(obj)
   casename = obj.casename;
+  output_folder = pwd;
   % dump to file
-  write_depth_file(obj, input_folder, casename);
-  write_grid_file(obj, input_folder, casename);
-  write_obc_file(obj, input_folder, casename);
-  write_cor_file(obj, input_folder, casename);
-  write_sigma_file(obj, input_folder, casename, 'Uniform', 10);
-  write_sponge_file(obj, input_folder, casename)
+
+  write_depth_file(obj, output_folder, casename);
+  write_grid_file(obj, output_folder, casename);
+  write_obc_file(obj, output_folder, casename);
+  write_cor_file(obj, output_folder, casename);
+  write_sigma_file(obj, output_folder, casename, 'Uniform', 10);
+  write_sponge_file(obj, output_folder, casename)
 end
 
 %------------------------------------------------------------------------------
@@ -69,20 +71,22 @@ function write_obc_file(obj, input_folder, casename)
     fprintf(file_h, 'OBC boundary number = %d\n', 0);
   else
 
-    fprintf(file_h, 'Total OBC node number = %d\n', obj.Nobc_nodes);
+    fprintf(file_h, 'OBC Node Number = %d\n', obj.Nobc_nodes);
     counter = 0;
 
     for i = 1:Nboc
-
       for j = 1:numel(obj.open_boundary(i).vertex)
         counter = counter + 1;
-        fprintf(file_h, '%d %d %d\n', counter, obj.open_boundary(i).vertex(j), obj.open_boundary(i).type);
+        fprintf(file_h, '%d %d %d\n', ...
+          counter, ...
+          obj.open_boundary(i).vertex(j), ...
+          obj.open_boundary(i).type ...
+        );
       end
-
     end
 
   end
-
+  fprintf(file_h, '\n');
   fclose(file_h);
 end % function
 
@@ -146,24 +150,21 @@ function write_sponge_file(obj, input_folder, casename)
   Nboc = numel(obj.open_boundary);
 
   if (Nboc == 0)
-    fprintf(file_h, 'OBC boundary number = %d\n', 0);
+    fprintf(file_h, 'Sponge Node Number = %d\n', 0);
   else
 
-    fprintf(file_h, 'Total OBC node number = %d\n', obj.Nobc_nodes);
+    fprintf(file_h, 'Sponge Node Number = %d\n', obj.Nobc_nodes);
 
     for i = 1:Nboc
-
       for j = 1:numel(obj.open_boundary(i).vertex)
-        % fprintf(file_h, '%d %d %f\n', counter, obj.open_boundary(i).vertex(j), obj.open_boundary(i).coeff);
         fprintf(file_h, '%d %f %f \n', ...
           obj.open_boundary(i).vertex(j), ...
           obj.open_boundary(i).radius(j), ...
           obj.open_boundary(i).coeff(j));
       end
-
     end
 
   end
-
+  fprintf(file_h, '\n');
   fclose(file_h);
 end % function

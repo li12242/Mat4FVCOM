@@ -1,3 +1,7 @@
 {
-  "matlab-formatter.indentwidth": 2
+  "matlab-formatter.indentwidth": 2,
+  "matlab-formatter.indentMode": "all_functions",
+  "matlab-formatter.separateBlocks": false,
+  "MATLAB.installPath": "/mnt/beegfs/lilongxiang/app/matlab_r2022a/",
+  "MATLAB.maxFileSizeForAnalysis": 80
 }

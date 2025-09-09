@@ -1,5 +1,9 @@
-% read ADCIRC fort.14 file
-classdef AdcircFile14 < handle
+% ADCIRCF14 Class for handling ADCIRC fort.14 files
+%
+% This class, AdcircFile14, is designed to manage and manipulate ADCIRC
+% fort.14 files, which contain grid and boundary condition information
+% for ADCIRC simulations.
+classdef MatAdcirc < handle
     properties (SetAccess = private)
         Nv % number of vertex
         Ne % number of element
@@ -12,8 +16,18 @@ classdef AdcircFile14 < handle
 
     methods
 
-        function obj = AdcircFile14(filename)
-            if nargin > 0
+        % ADCIRCFILE14 Constructor for the AdcircFile14 class.
+        % 
+        % This function initializes an instance of the AdcircFile14 class.
+        % 
+        % Parameters:
+        %   filename (string): The path to the ADCIRC file (fort.14) to be loaded.
+        % 
+        % Returns:
+        %   obj: An instance of the AdcircFile14 class.
+        function obj = MatAdcirc(varargin)
+            if nargin == 1
+                filename = varargin{1};
                 obj = obj.read_fort14(obj, filename);
             end
         end
@@ -78,7 +92,6 @@ classdef AdcircFile14 < handle
                 if contains(line, 'land')
                     boundary(1).land = obj.read_boundary_index(Nb, file_h);
                 end
-
             end
 
         end

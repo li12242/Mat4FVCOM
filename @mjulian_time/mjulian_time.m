@@ -1,3 +1,9 @@
+% MJULIAN_TIME Class for handling modified Julian time.
+%
+% This class provides methods and properties to work with modified Julian
+% time, which is commonly used in scientific and engineering applications
+% for representing time in a continuous numerical format.
+%
 classdef mjulian_time < handle
 
   properties
@@ -23,7 +29,8 @@ classdef mjulian_time < handle
           [obj.year, obj.month, obj.day, obj.hour, obj.minu, obj.sec] = datevec(varargin{1});
           [obj.julian_day, obj.dayweek] = greg2mjulian( ...
             obj.year, obj.month, obj.day, ...
-            obj.hour, obj.minu, obj.sec);
+            obj.hour, obj.minu, obj.sec ...
+          );
           [~, ~, ~, ~, ~, ~, ~, obj.dategreg] = mjulian2greg(obj.julian_day);
           return
         elseif isnumeric(varargin{1})
@@ -42,10 +49,12 @@ classdef mjulian_time < handle
         obj.hour = varargin{4};
         obj.minu = varargin{5};
         obj.sec = varargin{6};
-        [obj.julian_day, obj.dayweek] = obj.greg2mjulian(obj.year, obj.month, obj.day, ...
-          obj.hour, obj.minu, obj.sec);
+        [obj.julian_day, obj.dayweek] = obj.greg2mjulian( ...
+          obj.year, obj.month, obj.day, ...
+          obj.hour, obj.minu, obj.sec ...
+        );
 
-          [~, ~, ~, ~, ~, ~, ~, obj.dategreg] = mjulian2greg(obj.julian_day);
+        [~, ~, ~, ~, ~, ~, ~, obj.dategreg] = mjulian2greg(obj.julian_day);
         return
       else
         error('Wrong input arguments');
@@ -57,7 +66,8 @@ classdef mjulian_time < handle
       % display
       fprintf('Julian Day: %f\n', obj.julian_day);
       fprintf('Gregorian Date: %04d-%02d-%02d %02d:%02d:%02.0f\n', ...
-        obj.year, obj.month, obj.day, obj.hour, obj.minu, obj.sec);
+        obj.year, obj.month, obj.day, obj.hour, obj.minu, obj.sec ...
+      );
       fprintf('Day of the week: %s\n', obj.dayweek);
     end % function
 
