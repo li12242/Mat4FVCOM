@@ -12,8 +12,7 @@ classdef MatFVCOM < handle
 
     Nv % number of vertices
     Ne % number of elements
-    Nriver % number of river
-    Nsponge % number of sponge vertices
+    % Nriver % number of river
 
     triangle_topology % vertex index of each element
     x % coordinate
@@ -22,7 +21,6 @@ classdef MatFVCOM < handle
     lat % coordinate in spherical
     h % water height
 
-    Nobc_nodes % total number of obc nodes
     open_boundary % open boundary
 
     % native_coords % 'carthesian' or 'spherical'
@@ -148,13 +146,12 @@ classdef MatFVCOM < handle
           obc_node = obc_node + numel(node_list);
 
           obj.open_boundary(i).vertex = node_list;
-          obj.open_boundary(i).type = 0; % default open boundary type
+          obj.open_boundary(i).type = 1; % default open boundary type
           obj.open_boundary(i).is_sponge = false; % default is sponge
           obj.open_boundary(i).radius = [];
           obj.open_boundary(i).coeff = [];
         end
       end
-      obj.Nobc_nodes = obc_node;
     end % function
 
   end % methods

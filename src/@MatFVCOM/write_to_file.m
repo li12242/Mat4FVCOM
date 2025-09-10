@@ -71,14 +71,13 @@ function write_obc_file(obj, input_folder, casename)
     fprintf(file_h, 'OBC boundary number = %d\n', 0);
   else
 
-    fprintf(file_h, 'OBC Node Number = %d\n', obj.Nobc_nodes);
-    counter = 0;
-
+    total_obn_num = length(unique([obj.open_boundary(:).vertex]));
+    fprintf(file_h, 'OBC Node Number = %d\n', total_obn_num);
+    vertex_id = 0;
     for i = 1:Nboc
       for j = 1:numel(obj.open_boundary(i).vertex)
-        counter = counter + 1;
-        fprintf(file_h, '%d %d %d\n', ...
-          counter, ...
+        vertex_id = vertex_id + 1;
+        fprintf(file_h, '%d %d %d\n', vertex_id, ...
           obj.open_boundary(i).vertex(j), ...
           obj.open_boundary(i).type ...
         );
@@ -153,7 +152,8 @@ function write_sponge_file(obj, input_folder, casename)
     fprintf(file_h, 'Sponge Node Number = %d\n', 0);
   else
 
-    fprintf(file_h, 'Sponge Node Number = %d\n', obj.Nobc_nodes);
+    total_obn_num = length(unique([obj.open_boundary(:).vertex]));
+    fprintf(file_h, 'Sponge Node Number = %d\n', total_obn_num);
 
     for i = 1:Nboc
       for j = 1:numel(obj.open_boundary(i).vertex)

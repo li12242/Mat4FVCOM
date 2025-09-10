@@ -31,7 +31,6 @@ classdef mjulian_time < handle
       %   mt = mjulian_time(matlab_datenum);
       %   mt = mjulian_time(year, month, day, hour, minu, sec);
       % 
-
       obj.mtime = datenum(varargin{:});
       obj.dategreg = datevec(obj.mtime);
       [obj.year, obj.month, obj.day, obj.hour, obj.minu, obj.sec] = datevec(obj.mtime);

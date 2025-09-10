@@ -109,7 +109,7 @@ classdef MatNetCDF < handle
     function plot_all_zeta(obj)
       parfor i = 1:obj.Ntime
         obj.update_time(i);
-        picture_name = sprintf('%s_%04d.png', 'zeta', i);
+        picture_name = sprintf('%s_%d.png', 'zeta', i);
         title_string = sprintf('Free Surface Elevation (m)\n%s', ...
           datestr(datenum('2024-01-01 01:00:00') + i / 24, 'yyyy-mm-dd HH:MM:SS'));
         obj.plot_tri_node(obj.zeta, title_string, picture_name);

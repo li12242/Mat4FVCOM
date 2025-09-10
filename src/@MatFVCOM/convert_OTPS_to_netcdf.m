@@ -40,7 +40,8 @@ function convert_OTPS_to_netcdf(obj, mopts_obj, opts_file)
   );
   out_file = sprintf('%s_obc.nc', obj.casename);
   nc_out.ncid = netcdf.create(out_file, 'clobber');
-  nc_out = write_nc_dimension(obj, nc_out, Nobc);
+  nc_out = write_nc_dimension(obj, nc_out, Nobc, time);
+  time = time - time(1); % make time start from 0
   write_nc_file(nc_out, obc_list, time, elevation);
   netcdf.close(nc_out.ncid);
 end % function
@@ -57,18 +58,19 @@ end % function
 %       obj       - Instance of the MatFVCOM class.
 %       nc_out    - NetCDF file object or structure to which dimensions
 %                   will be written.
-%       obc_nodes - Array or list of open boundary condition (OBC) nodes
+%       Nobn      - Array or list of open boundary condition (OBC) nodes
 %                   used to define the dimensions in the NetCDF file.
+%       mtime_vec - Array of time values in matlab datenum format.
 %
 %   Outputs:
 %       nc_out - Updated NetCDF file object or structure with the new
 %                dimensions added.
 %
 %   Example:
-%       nc_out = obj.write_nc_dimension(nc_out, obc_nodes);
+%       nc_out = obj.write_nc_dimension(nc_out, Nobn);
 %
 %   See also: OTHER_RELEVANT_FUNCTIONS
-function nc_out = write_nc_dimension(obj, nc_out, obc_nodes)
+function nc_out = write_nc_dimension(obj, nc_out, Nobn, mtime_vec)
   % define global attributes
   netcdf.putAtt(nc_out.ncid, netcdf.getConstant('NC_GLOBAL'), ...
     'type', 'FVCOM TIME SERIES ELEVATION FORCING FILE')
@@ -78,7 +80,7 @@ function nc_out = write_nc_dimension(obj, nc_out, obc_nodes)
     'history', 'FILE CREATED using write_FVCOM_elevtide')
 
   % define dimensions
-  nc_out.dim_nboc = netcdf.defDim(nc_out.ncid, 'nobc', obc_nodes); % open boundary node number
+  nc_out.dim_nboc = netcdf.defDim(nc_out.ncid, 'nobc', Nobn); % open boundary node number
   nc_out.dim_time = netcdf.defDim(nc_out.ncid, 'time', netcdf.getConstant('NC_UNLIMITED'));
   % nc_out.dim_date_str = netcdf.defDim(nc_out.ncid, 'DateStrLen', 26);
 
@@ -90,23 +92,22 @@ function nc_out = write_nc_dimension(obj, nc_out, obc_nodes)
   nc_out.var_iint = netcdf.defVar(nc_out.ncid, 'iint', 'NC_INT', nc_out.dim_time);
   netcdf.putAtt(nc_out.ncid, nc_out.var_iint, 'long_name', 'internal mode iteration number');
 
+  % time_attr = ['days since ', datestr(mtime_vec(1), 'yyyy-mm-dd HH:MM:SS')];
+  time_attr = 'days since 0.0';
   nc_out.var_time = netcdf.defVar(nc_out.ncid, 'time', 'NC_FLOAT', nc_out.dim_time);
   netcdf.putAtt(nc_out.ncid, nc_out.var_time, 'long_name', 'time');
-  netcdf.putAtt(nc_out.ncid, nc_out.var_time, 'units', 'days since 0.0');
+  netcdf.putAtt(nc_out.ncid, nc_out.var_time, 'units', time_attr);
   netcdf.putAtt(nc_out.ncid, nc_out.var_time, 'time_zone', 'none');
-  % netcdf.putAtt(nc_out.ncid, time_varid, 'units', 'days since 1858-11-17 00:00:00');
-  % netcdf.putAtt(nc_out.ncid, time_varid, 'format', 'modified julian day (MJD)');
-  % netcdf.putAtt(nc_out.ncid, time_varid, 'time_zone', 'UTC');
 
   nc_out.var_itime = netcdf.defVar(nc_out.ncid, 'Itime', 'NC_INT', nc_out.dim_time);
-  netcdf.putAtt(nc_out.ncid, nc_out.var_itime, 'units', 'days since 0.0');
+  netcdf.putAtt(nc_out.ncid, nc_out.var_itime, 'units', time_attr);
   netcdf.putAtt(nc_out.ncid, nc_out.var_itime, 'time_zone', 'none');
   % netcdf.putAtt(nc_out.ncid, itime_varid, 'units', 'days since 1858-11-17 00:00:00');
   % netcdf.putAtt(nc_out.ncid, itime_varid, 'format', 'modified julian day (MJD)');
   % netcdf.putAtt(nc_out.ncid, itime_varid, 'time_zone', 'UTC');
 
   nc_out.var_itime2 = netcdf.defVar(nc_out.ncid, 'Itime2', 'NC_INT', nc_out.dim_time);
-  netcdf.putAtt(nc_out.ncid, nc_out.var_itime2, 'units', 'days since 0.0');
+  netcdf.putAtt(nc_out.ncid, nc_out.var_itime2, 'units', time_attr);
   netcdf.putAtt(nc_out.ncid, nc_out.var_itime2, 'time_zone', 'none');
   % netcdf.putAtt(nc_out.ncid, itime2_varid, 'units', 'msec since 00:00:00');
   % netcdf.putAtt(nc_out.ncid, itime2_varid, 'time_zone', 'UTC');
