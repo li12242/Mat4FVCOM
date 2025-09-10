@@ -1,74 +1,44 @@
-% MJULIAN_TIME Class for handling modified Julian time.
-%
-% This class provides methods and properties to work with modified Julian
-% time, which is commonly used in scientific and engineering applications
-% for representing time in a continuous numerical format.
-%
 classdef mjulian_time < handle
-
+  % MJULIAN_TIME Class for handling modified Julian time.
+  %
+  % This class provides methods and properties to work with modified Julian
+  % time, which is commonly used in scientific and engineering applications
+  % for representing time in a continuous numerical format.
+  %
   properties
     julian_day % modified julian time
 
-    year
-    month
-    day
-    hour
-    minu
-    sec
-    dayweek
-    dategreg % [day, month, year, hour, minu, sec]
+    year % year date
+    month % month
+    day % day
+    hour % hour
+    minu % minute
+    sec % second
+    dayweek % day of the week
+    dategreg % [year, month, day, hour, minu, sec]
+
+    mtime % matlab time
   end % properties
 
   methods
 
     function obj = mjulian_time(varargin)
-      % constructor
-      if nargin == 1
+      % MJULIAN_TIME Constructor for the mjulian_time class.
+      % This function initializes an instance of the mjulian_time class.
+      % Usage:
+      % 
+      %   mt = mjulian_time('YYYY-MM-DD HH:MM:SS');
+      %   mt = mjulian_time(matlab_datenum);
+      %   mt = mjulian_time(year, month, day, hour, minu, sec);
+      % 
 
-        if ischar(varargin{1}) || isstring(varargin{1})
-          [obj.year, obj.month, obj.day, obj.hour, obj.minu, obj.sec] = datevec(varargin{1});
-          [obj.julian_day, obj.dayweek] = greg2mjulian( ...
-            obj.year, obj.month, obj.day, ...
-            obj.hour, obj.minu, obj.sec ...
-          );
-          [~, ~, ~, ~, ~, ~, ~, obj.dategreg] = mjulian2greg(obj.julian_day);
-          return
-        elseif isnumeric(varargin{1})
-          obj.julian_day = varargin{1};
-          [obj.year, obj.month, obj.day, ...
-             obj.hour, obj.minu, obj.sec, obj.dayweek, obj.dategreg] = ...
-            mjulian2greg(obj.julian_day);
-          return
-        end
-
-      elseif nargin == 6
-        % default time
-        obj.year = varargin{1};
-        obj.month = varargin{2};
-        obj.day = varargin{3};
-        obj.hour = varargin{4};
-        obj.minu = varargin{5};
-        obj.sec = varargin{6};
-        [obj.julian_day, obj.dayweek] = obj.greg2mjulian( ...
-          obj.year, obj.month, obj.day, ...
-          obj.hour, obj.minu, obj.sec ...
-        );
-
-        [~, ~, ~, ~, ~, ~, ~, obj.dategreg] = mjulian2greg(obj.julian_day);
-        return
-      else
-        error('Wrong input arguments');
-      end
-
-    end % function
-
-    function disp(obj)
-      % display
-      fprintf('Julian Day: %f\n', obj.julian_day);
-      fprintf('Gregorian Date: %04d-%02d-%02d %02d:%02d:%02.0f\n', ...
-        obj.year, obj.month, obj.day, obj.hour, obj.minu, obj.sec ...
+      obj.mtime = datenum(varargin{:});
+      obj.dategreg = datevec(obj.mtime);
+      [obj.year, obj.month, obj.day, obj.hour, obj.minu, obj.sec] = datevec(obj.mtime);
+      [obj.julian_day, obj.dayweek] = greg2mjulian( ...
+        obj.dategreg(1), obj.dategreg(2), obj.dategreg(3), ...
+        obj.dategreg(4), obj.dategreg(5), obj.dategreg(6) ...
       );
-      fprintf('Day of the week: %s\n', obj.dayweek);
     end % function
 
   end % methods

@@ -1,22 +1,23 @@
-%TRANSFER_TO_CARTHESIAN Convert coordinates to Cartesian system.
-%   TRANSFER_TO_CARTHESIAN(OBJ, VARARGIN) transforms the coordinates of the
-%   object OBJ to the Cartesian coordinate system. Additional parameters
-%   can be passed through VARARGIN to customize the transformation process.
-%
-%   Inputs:
-%       OBJ - An instance of the MatFVCOM class containing the data to be
-%             transformed.
-%       VARARGIN - Optional arguments to specify additional parameters for
-%                  the transformation.
-%
-%   Outputs:
-%       None. The transformation is applied directly to the object.
-%
-%   Example:
-%       obj.transfer_to_carthesian('param1', value1, 'param2', value2);
-%
-%   See also: OTHER_RELEVANT_FUNCTIONS
 function transfer_to_carthesian(obj, varargin)
+  % TRANSFER_TO_CARTHESIAN Convert coordinates to Cartesian system.
+  %   TRANSFER_TO_CARTHESIAN(OBJ, VARARGIN) transforms the coordinates of the
+  %   object OBJ to the Cartesian coordinate system. Additional parameters
+  %   can be passed through VARARGIN to customize the transformation process.
+  %
+  %   Inputs:
+  %       OBJ - An instance of the MatFVCOM class containing the data to be
+  %             transformed.
+  %       VARARGIN - Optional arguments to specify additional parameters for
+  %                  the transformation.
+  %
+  %   Outputs:
+  %       None. The transformation is applied directly to the object.
+  %
+  %   Example:
+  %       obj.transfer_to_carthesian('param1', value1, 'param2', value2);
+  %
+  %   See also: OTHER_RELEVANT_FUNCTIONS
+
   % 转换经纬度坐标为笛卡尔坐标系
   if nargin == 3
     lat0 = varargin{1};

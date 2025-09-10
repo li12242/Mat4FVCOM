@@ -3,8 +3,6 @@ classdef MatFVCOM < handle
   %   This class provides methods and properties to interact with FVCOM data,
   %   enabling users to perform various operations and analyses on FVCOM datasets.
   %
-  %   The class inherits from the 'handle' class, meaning objects of this class
-  %   are passed by reference.
   %
 
   properties
@@ -12,10 +10,10 @@ classdef MatFVCOM < handle
 
     time % structure with start/end time in modified julian day
 
-    Nv
-    Ne
-    Nriver
-    Nsponge
+    Nv % number of vertices
+    Ne % number of elements
+    Nriver % number of river
+    Nsponge % number of sponge vertices
 
     triangle_topology % vertex index of each element
     x % coordinate
@@ -46,16 +44,40 @@ classdef MatFVCOM < handle
     % Returns:
     %   obj: An instance of the MatFVCOM class.
     function obj = MatFVCOM(casename, varargin)
-      obj.casename = casename;
+      p = inputParser;
 
-      if nargin == 2
+      % parse case name
+      addRequired(p, 'casename', @ischar);
 
-        if class(varargin{1}) == "AdcircFile14"
-          obj = obj.convert_from_Adcirc14(obj, varargin{1});
-        end
+      % parse input adcirc struct
+      default_adcirc = [];
+      addParameter(p, 'adcirc', default_adcirc, ...
+        @(x)validateattributes(x, {'MatAdcirc'}, {'nonempty'}) ...
+      );
 
-      else
-        fprintf('Error: wrong number of input arguments!\n');
+      % parse fvcom input files
+      default_input_folder = [];
+      addParameter(p, 'fvcom', default_input_folder, @isstring);
+
+      % parse input time
+      default_time = [];
+      charchk = {'mjulian_time'};
+      nempty = {'nonempty'};
+      addParameter(p, 'time', default_time, ...
+        @(x)validateattributes(x, charchk, nempty) ...
+      );
+
+      % do the parsing
+      parse(p, casename, varargin{:});
+
+      % assign properties
+      obj.casename = p.Results.casename;
+      if ~isempty(p.Results.adcirc)
+        obj.read_from_Adcirc(obj, p.Results.adcirc);
+      end
+
+      if ~isempty(p.Results.time)
+        obj.set_time(p.Results.time(1), p.Results.time(2));
       end
 
     end % function
@@ -69,36 +91,42 @@ classdef MatFVCOM < handle
     % add sponge in specific open boundary index
     add_spong_to_open_boundary(obj, open_boundary_index, varargin)
 
-    write_OTPS_input(obj, dt_hour)
+    % convert to OPTS object
+    mopts = convert_OPTS(obj, varargin)
 
     % write OPTS file to netcdf format
     convert_OPTS_to_netcdf(obj, filename, dt_hour)
 
-    % smooth a vertex based field
-    field = smooth_field(obj, fieldin, SmoothFactor, Niter, varargin)
+    function set_time(obj, start_t, end_t)
+      % SET_TIME Set the start and end times for the MatFVCOM object.
+      %   obj = SET_TIME(obj, start_t, end_t) sets the
+      %   start and end times for the object using the mjulian_time objects.
+      %
+      % :param start_t: A string representing the start time.
+      % :param end_t: A string representing the end time.
 
-    %SET_TIME Set the start and end times for the MatFVCOM object.
-    %   obj = SET_TIME(obj, start_time_string, end_time_string) sets the
-    %   start and end times for the object using the provided time strings.
-    %   The times are converted to Modified Julian Date format.
-    %
-    %   Input:
-    %       start_time_string - A string representing the start time.
-    %       end_time_string   - A string representing the end time.
-    %
-    %   Output:
-    %       obj - The updated MatFVCOM object with the time structure set.
-    function obj = set_time(obj, start_time_string, end_time_string)
-      obj.time = struct('start', [], 'end', []);
-      obj.time(1).start = mjulian_time(start_time_string);
-      obj.time(1).end = mjulian_time(end_time_string);
+      % check inputs
+      if (class(start_t) ~= 'mjulian_time') | (class(end_t) ~= 'mjulian_time')
+        error('Start and end times must be mjulian_time object.');
+      end
+      obj.time = struct('start', start_t, 'end', end_t);
     end % function
 
   end % methods
 
   methods (Static)
 
-    function obj = convert_from_Adcirc14(obj, adcirc_struct)
+    function read_from_Adcirc(obj, adcirc_struct)
+      % READ_FROM_ADCIRC Convert an Adcirc structure to a MatFVCOM object.
+      %   obj = READ_FROM_ADCIRC(obj, adcirc_struct) converts the given
+      %   Adcirc structure to a MatFVCOM object by mapping the relevant fields.
+      %
+      % :param adcirc_struct: An instance of the MatAdcirc class containing
+      %                        the Adcirc data to be converted.
+
+      if class(adcirc_struct) ~= "MatAdcirc"
+        error('Input must be an instance of MatAdcirc class.');
+      end
       obj.Nv = adcirc_struct.Nv;
       obj.Ne = adcirc_struct.Ne;
       obj.x = adcirc_struct.coordiantes(:, 1);
