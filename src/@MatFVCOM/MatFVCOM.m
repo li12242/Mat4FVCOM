@@ -92,10 +92,10 @@ classdef MatFVCOM < handle
     add_spong_to_open_boundary(obj, open_boundary_index, varargin)
 
     % convert to OPTS object
-    mopts = convert_OPTS(obj, varargin)
+    motps = convert_OTPS(obj, varargin)
 
     % write OPTS file to netcdf format
-    convert_OPTS_to_netcdf(obj, filename, dt_hour)
+    convert_OTPS_to_netcdf(obj, mopts_obj, filename)
 
     function set_time(obj, start_t, end_t)
       % SET_TIME Set the start and end times for the MatFVCOM object.

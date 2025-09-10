@@ -1,4 +1,4 @@
-function mopts = convert_OPTS(obj, varargin)
+function motps = convert_OPTS(obj, varargin)
   % CONVERT_OPTS Convert MatFVCOM object to OTPS object.
   %
   % This method is part of the MatFVCOM class and is used to convert the
@@ -8,9 +8,9 @@ function mopts = convert_OPTS(obj, varargin)
   %
   % Usage:
   %
-  %   mopts = obj.convert_OPTS(1/24); % for 1-hour per step
-  %   mopts = obj.convert_OPTS(time_vec); % for time array
-  %   mopts = obj.convert_OPTS(start_time, end_time, 1/24); % for time range
+  %   motps = obj.convert_OPTS(1/24); % for 1-hour per step
+  %   motps = obj.convert_OPTS(time_vec); % for time array
+  %   motps = obj.convert_OPTS(start_time, end_time, 1/24); % for time range
 
   obc_index = [obj.open_boundary(:).vertex];
   obc_index = unique(obc_index);
@@ -24,10 +24,10 @@ function mopts = convert_OPTS(obj, varargin)
     if isnumeric(varargin{1}) & isscalar(varargin{1})
       dt_hour = varargin{1};
       mtime_vec = obj.time.start.mtime:dt_hour / 24:obj.time.end.mtime;
-      mopts = MatOTPS(obj.lon(obc_index), obj.lat(obc_index), mtime_vec);
+      motps = MatOTPS(obj.lon(obc_index), obj.lat(obc_index), mtime_vec);
     elseif isnumeric(varargin{1}) & isvector(varargin{1})
       mtime_vec = varargin{1};
-      mopts = MatOTPS(obj.lon(obc_index), obj.lat(obc_index), mtime_vec);
+      motps = MatOTPS(obj.lon(obc_index), obj.lat(obc_index), mtime_vec);
     else
       error('When providing one argument, it must be a numeric scalar or vector representing time.');
     end % if
@@ -36,11 +36,9 @@ function mopts = convert_OPTS(obj, varargin)
     end_t = varargin{2};
     dt_hour = varargin{3};
     mtime_vec = datenum(start_t):dt_hour / 24:datenum(end_t);
-    mopts = MatOTPS(obj.lon(obc_index), obj.lat(obc_index), mtime_vec);
+    motps = MatOTPS(obj.lon(obc_index), obj.lat(obc_index), mtime_vec);
   else
     error('Invalid number of input arguments.');
   end % if
 
-  % write_time_file(obj.time.start, obj.time.end, dt_hour)
-  % wirte_lat_lon(obj)
 end % function

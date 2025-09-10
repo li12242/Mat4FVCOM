@@ -99,21 +99,26 @@ classdef MatOTPS < handle
         fgetl(file_h);
       end
 
-      z = zeros(obj.Nt, obj.Nv);
-      depth = zeros(obj.Nv, 1);
+      Ntime = obj.Nt - 1;
+      z = zeros(Ntime, obj.Nv);
 
       % [data, nsize] = fscanf(file_h, '%f %f', [2, 1]); % read lat, lon
       for i = 1:obj.Nv
         fgetl(file_h); % skip the line: lat lon
         [data, nsize] = fscanf(file_h, '%d.%d.%d %d:%d:%d %f %f\n', [8, inf]);
         % fprintf('reading %d data for vertex %d\n', nsize, i);
-        z = data(7, 1:end - 1)'; % elevation
+        if nsize > 8 * Ntime
+          z(:, i) = data(7, 1:end - 1)'; % jump the lat lon
+        else 
+          z(:, i) = data(7, :)'; % for the last vertex
+        end
       end
       fclose(file_h);
 
+      % use the last vertex values
       time = datenum( ...
-        data(3, 1:end - 1), data(1, 1:end - 1), data(2, 1:end - 1), ...
-        data(4, 1:end - 1), data(5, 1:end - 1), data(6, 1:end - 1) ...
+        data(3, 1:end), data(1, 1:end), data(2, 1:end), ...
+        data(4, 1:end), data(5, 1:end), data(6, 1:end) ...
       );
     end % function
 
