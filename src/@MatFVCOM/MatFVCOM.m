@@ -2,8 +2,7 @@ classdef MatFVCOM < handle
   % MATFVCOM A class for handling FVCOM data and operations.
   %   This class provides methods and properties to interact with FVCOM data,
   %   enabling users to perform various operations and analyses on FVCOM datasets.
-  %
-  %
+  % 
 
   properties
     casename % case name
@@ -55,7 +54,7 @@ classdef MatFVCOM < handle
 
       % parse fvcom input files
       default_input_folder = [];
-      addParameter(p, 'fvcom', default_input_folder, @isstring);
+      addParameter(p, 'fvcom', default_input_folder, @(x) isstring(x) || ischar(x));
 
       % parse input time
       default_time = [];
@@ -74,6 +73,10 @@ classdef MatFVCOM < handle
         obj.read_from_Adcirc(obj, p.Results.adcirc);
       end
 
+      if ~isempty(p.Results.fvcom)
+        obj.read_from_fvcom(obj, p.Results.fvcom);
+      end
+
       if ~isempty(p.Results.time)
         obj.set_time(p.Results.time(1), p.Results.time(2));
       end
@@ -90,10 +93,10 @@ classdef MatFVCOM < handle
     add_spong_to_open_boundary(obj, open_boundary_index, varargin)
 
     % convert to OPTS object
-    motps = convert_OTPS(obj, varargin)
+    motps = convert_OTPS_prediction(obj, varargin)
 
     % write OPTS file to netcdf format
-    convert_OTPS_to_netcdf(obj, mopts_obj, filename)
+    convert_OTPS_prediction_to_netcdf(obj, mopts_obj, filename)
 
     function set_time(obj, start_t, end_t)
       % SET_TIME Set the start and end times for the MatFVCOM object.
@@ -115,13 +118,15 @@ classdef MatFVCOM < handle
 
   methods (Static)
 
+    obj = read_from_fvcom(obj, input_dir)
+
     function read_from_Adcirc(obj, adcirc_struct)
       % READ_FROM_ADCIRC Convert an Adcirc structure to a MatFVCOM object.
       %   obj = READ_FROM_ADCIRC(obj, adcirc_struct) converts the given
-      %   Adcirc structure to a MatFVCOM object by mapping the relevant fields.
+      %   MatAdcirc object to a MatFVCOM object by mapping the relevant fields.
       %
       % :param adcirc_struct: An instance of the MatAdcirc class containing
-      %                        the Adcirc data to be converted.
+      %                       the Adcirc data to be converted.
 
       if class(adcirc_struct) ~= "MatAdcirc"
         error('Input must be an instance of MatAdcirc class.');

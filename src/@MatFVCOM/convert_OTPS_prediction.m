@@ -1,5 +1,6 @@
-function motps = convert_OTPS(obj, varargin)
-  % CONVERT_OTPS Convert MatFVCOM object to OTPS object.
+function motps = convert_OTPS_prediction(obj, varargin)
+  % CONVERT_OTPS_PREDICTION Convert MatFVCOM object to OTPS object for tidal 
+  % prediction of open boundary.
   %
   % This method is part of the MatFVCOM class and is used to convert the
   % object's data into a format suitable for OTPS (Oregon State University
@@ -9,7 +10,7 @@ function motps = convert_OTPS(obj, varargin)
   % Usage:
   %
   % .. code-block:: matlab
-  % 
+  %
   %   motps = obj.convert_OTPS(1/24); % for 1-hour per step
   %   motps = obj.convert_OTPS(time_vec); % for time array
   %   motps = obj.convert_OTPS(start_time, end_time, 1/24); % for time range

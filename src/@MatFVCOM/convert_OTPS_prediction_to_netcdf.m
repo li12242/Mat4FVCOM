@@ -1,7 +1,7 @@
-function convert_OTPS_to_netcdf(obj, mopts_obj, opts_file)
-  % CONVERT_OPTS_TO_NETCDF Convert OPTS file to NetCDF format.
+function convert_OTPS_prediction_to_netcdf(obj, mopts_obj, opts_file)
+  % CONVERT_OTPS_REDICTION_TO_NETCDF Convert OPTS file to NetCDF format.
   %
-  %   convert_OPTS_to_netcdf(obj, mopts_obj, pts_file) converts the specified
+  %   convert_OTPS_prediction_to_netcdf(obj, mopts_obj, pts_file) converts the specified
   %   OPTS file into a NetCDF file. This function is a method of the MatFVCOM
   %   class and is used to process and transform data from the OPTS file into
   %   a format suitable for NetCDF storage.
@@ -11,7 +11,7 @@ function convert_OTPS_to_netcdf(obj, mopts_obj, opts_file)
   %
   % .. code-block:: matlab
   %
-  %   obj.convert_OPTS_to_netcdf(mopts_obj, 'path/to/z.out');
+  %   obj.convert_OTPS_prediction_to_netcdf(mopts_obj, 'path/to/z.out');
   %
 
   % cat all boundary nodes
@@ -40,31 +40,31 @@ function convert_OTPS_to_netcdf(obj, mopts_obj, opts_file)
   netcdf.close(nc_out.ncid);
 end % function
 
-% WRITE_NC_DIMENSION Write dimensions to a NetCDF file.
-%
-%   nc_out = WRITE_NC_DIMENSION(obj, nc_out, obc_nodes) writes the
-%   specified dimensions to the NetCDF file represented by nc_out. This
-%   function is part of the MatFVCOM class and is used to handle the
-%   creation of dimensions in the NetCDF file based on the provided
-%   boundary node information.
-%
-%   Inputs:
-%       obj       - Instance of the MatFVCOM class.
-%       nc_out    - NetCDF file object or structure to which dimensions
-%                   will be written.
-%       Nobn      - Array or list of open boundary condition (OBC) nodes
-%                   used to define the dimensions in the NetCDF file.
-%       mtime_vec - Array of time values in matlab datenum format.
-%
-%   Outputs:
-%       nc_out - Updated NetCDF file object or structure with the new
-%                dimensions added.
-%
-%   Example:
-%       nc_out = obj.write_nc_dimension(nc_out, Nobn);
-%
-%   See also: OTHER_RELEVANT_FUNCTIONS
 function nc_out = write_nc_dimension(obj, nc_out, Nobn, mtime_vec)
+  % WRITE_NC_DIMENSION Write dimensions to a NetCDF file.
+  %
+  %   nc_out = WRITE_NC_DIMENSION(obj, nc_out, obc_nodes) writes the
+  %   specified dimensions to the NetCDF file represented by nc_out. This
+  %   function is part of the MatFVCOM class and is used to handle the
+  %   creation of dimensions in the NetCDF file based on the provided
+  %   boundary node information.
+  %
+  %   Inputs:
+  %       obj       - Instance of the MatFVCOM class.
+  %       nc_out    - NetCDF file object or structure to which dimensions
+  %                   will be written.
+  %       Nobn      - Array or list of open boundary condition (OBC) nodes
+  %                   used to define the dimensions in the NetCDF file.
+  %       mtime_vec - Array of time values in matlab datenum format.
+  %
+  %   Outputs:
+  %       nc_out - Updated NetCDF file object or structure with the new
+  %                dimensions added.
+  %
+  %   Example:
+  %       nc_out = obj.write_nc_dimension(nc_out, Nobn);
+  %
+
   % define global attributes
   netcdf.putAtt(nc_out.ncid, netcdf.getConstant('NC_GLOBAL'), ...
     'type', 'FVCOM TIME SERIES ELEVATION FORCING FILE')
