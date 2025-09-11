@@ -1,5 +1,5 @@
-function motps = convert_OPTS(obj, varargin)
-  % CONVERT_OPTS Convert MatFVCOM object to OTPS object.
+function motps = convert_OTPS(obj, varargin)
+  % CONVERT_OTPS Convert MatFVCOM object to OTPS object.
   %
   % This method is part of the MatFVCOM class and is used to convert the
   % object's data into a format suitable for OTPS (Oregon State University
@@ -8,9 +8,11 @@ function motps = convert_OPTS(obj, varargin)
   %
   % Usage:
   %
-  %   motps = obj.convert_OPTS(1/24); % for 1-hour per step
-  %   motps = obj.convert_OPTS(time_vec); % for time array
-  %   motps = obj.convert_OPTS(start_time, end_time, 1/24); % for time range
+  % .. code-block:: matlab
+  % 
+  %   motps = obj.convert_OTPS(1/24); % for 1-hour per step
+  %   motps = obj.convert_OTPS(time_vec); % for time array
+  %   motps = obj.convert_OTPS(start_time, end_time, 1/24); % for time range
 
   obc_index = [obj.open_boundary(:).vertex];
   obc_index = unique(obc_index);

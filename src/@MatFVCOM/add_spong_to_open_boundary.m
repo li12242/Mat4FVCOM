@@ -3,25 +3,17 @@ function add_spong_to_open_boundary(obj, open_boundary_index, varargin)
   % node's furthest neighbour.
   % (Adapted from Phil Hall's 'produce_netcdf_input_data.py')
   %
-  % spongeRadius = calc_sponge_radius(obj,Nlist)
+  % Calculates the sponge radius for each node on the open boundary, based
+  % on the minimum of either the distance to the node's furthest
+  % neighbour, or 100 km.
   %
-  % DESCRIPTION
-  %    Calculates the sponge radius for each node on the open boundary, based
-  %    on the minimum of either the distance to the node's furthest
-  %    neighbour, or 100 km.
+  % :param open_boundary_index: Index of open boundary in obj.open_boundary
+  % :param coeff: Sponge coefficient (1/e-folding distance)
   %
-  % INPUT
-  %    obj = Matlab FVCOM object
-  %    open_boundary_index = Index of open boundary in obj.open_boundary
-  %    coeff = Sponge coefficient (1/e-folding distance)
+  % .. code-block:: matlab
+  % 
+  %    mfvcom.add_spong_to_open_boundary(1, 0.001)
   %
-  % OUTPUT
-  %
-  % EXAMPLE USAGE
-  %    mfvcom.add_spong_to_open_boundary(obj, 1, 0.001)
-  %
-  % Author(s)
-  %    Karen Thurston (National Oceanography Centre, Liverpool)
 
   % define sponge parameters
   if ~isempty(varargin)

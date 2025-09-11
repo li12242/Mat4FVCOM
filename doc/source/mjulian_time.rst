@@ -1,9 +1,10 @@
 
-Modified Julian Time
+mjulian_time
 ++++++++++++++++++++
 
-.. automodule:: mjulian_time
-   :synopsis: Functions for converting to and from Modified Julian Time (MJT).
+Modified Julian Time 
+
+.. automodule:: @mjulian_time
 
 .. autoclass:: mjulian_time
    :members:

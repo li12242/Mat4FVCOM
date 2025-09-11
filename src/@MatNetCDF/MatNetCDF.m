@@ -3,9 +3,6 @@ classdef MatNetCDF < handle
   %   This class provides methods and properties to interact with NetCDF data,
   %   enabling users to perform various operations and analyses on NetCDF datasets.
   %
-  %   The class inherits from the 'handle' class, meaning objects of this class
-  %   are passed by reference.
-  %
 
   properties
     filepath % file path of the NetCDF file

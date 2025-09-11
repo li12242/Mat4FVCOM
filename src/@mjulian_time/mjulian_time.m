@@ -15,7 +15,7 @@ classdef mjulian_time < handle
     minu % minute
     sec % second
     dayweek % day of the week
-    dategreg % [year, month, day, hour, minu, sec]
+    dategreg % vector contains [year, month, day, hour, minu, sec]
 
     mtime % matlab time
   end % properties
@@ -27,10 +27,12 @@ classdef mjulian_time < handle
       % This function initializes an instance of the mjulian_time class.
       % Usage:
       % 
+      % .. code-block:: matlab
+      %
       %   mt = mjulian_time('YYYY-MM-DD HH:MM:SS');
       %   mt = mjulian_time(matlab_datenum);
       %   mt = mjulian_time(year, month, day, hour, minu, sec);
-      % 
+      %
       obj.mtime = datenum(varargin{:});
       obj.dategreg = datevec(obj.mtime);
       [obj.year, obj.month, obj.day, obj.hour, obj.minu, obj.sec] = datevec(obj.mtime);
@@ -44,62 +46,58 @@ classdef mjulian_time < handle
 
 end % classdef
 
-%
+function [mjulianday, dayweek] = greg2mjulian(year, month, day, hour, mint, sec)
 % Convert the Gregorian dates to Modified Julian dates.
 % Usage:
-%     mjulianday = greg2mjulian(yyyy,mm,dd,HH,MM,SS)
-function [mjulianday, dayweek] = greg2mjulian(year, month, day, hour, mint, sec)
+% 
+% .. code-block:: matlab
+% 
+%     [mjulianday, dayweek] = greg2mjulian(yyyy,mm,dd,HH,MM,SS)
+% 
   [mjulianday, dayweek] = greg2julian(year, month, day, hour, mint, sec);
   mjulianday = mjulianday - 2400000.5;
 end % function
 
-% This function converts the Gregorian dates to Julian dates.
-%
-% 0. Syntax:
-% [JD,julianday] = juliandate(year,month,day,hour,min,sec)
-%
-% 1. Inputs:
-%     year, month, day = date in Gregorian calendar.
-%     hour,min,sec = time at universal time.
-%
-% 2. Outputs:
-%     JD = Julian date.
-%     julianday = day of week.
-%
-% 3. Example:
-%  >> [a,b] = greg2julian(2006,5,30,2,30,28)
-%  a =
-%
-%           2453885.60449074
-%  b =
-%
-%  Tuesday
-%
-%  4. Notes:
-%     - For all common era (CE) dates in the Gregorian calendar, and for more
-%     information, check the referents.
-%     - The function was tested, using  the julian date converter of U.S. Naval Observatory and
-%     the results were similar. You can check it.
-%     - Trying to do the life... more easy with the conversions.
-%
-% 5. Referents:
-%     Astronomical Applications Department. "Julian Date Converter". From U.S. Naval Observatory.
-%               http://aa.usno.navy.mil/data/docs/JulianDate.html
-%     Duffett-Smith, P. (1992).  Practical Astronomy with Your Calculator.
-%               Cambridge University Press, England:  pp. 9.
-%     Seidelmann, P. K. (1992). Explanatory Supplement to the Astronomical Almanac.
-%               University Science Books, USA.  pp. 55-56.
-%      Weisstein, Eric W.  "Julian Date".  From World of Astronomy--A Wolfram Web Resource.
-%               http://scienceworld.wolfram.com/astronomy/JulianDate.html
-%
-% Gabriel Ruiz Mtz.
-% May-2006
-%
-% Modifications:
-% 04/06/06: To find the days, it was only changed the loop to a cell array. Thanks to J??e.
-% ------------------------------------------------------------------------------------------------------------
 function [JD, julianday] = greg2julian(year, month, day, hour, min, sec)
-
+  % This function converts the Gregorian dates to Julian dates.
+  %
+  % 0. Syntax:
+  % [JD,julianday] = juliandate(year,month,day,hour,min,sec)
+  %
+  % 1. Inputs:
+  %     year, month, day = date in Gregorian calendar.
+  %     hour,min,sec = time at universal time.
+  %
+  % 2. Outputs:
+  %     JD = Julian date.
+  %     julianday = day of week.
+  %
+  % 3. Example:
+  %  >> [a,b] = greg2julian(2006,5,30,2,30,28)
+  %  a =
+  %
+  %           2453885.60449074
+  %  b =
+  %
+  %  Tuesday
+  %
+  %  4. Notes:
+  %     - For all common era (CE) dates in the Gregorian calendar, and for more
+  %     information, check the referents.
+  %     - The function was tested, using  the julian date converter of U.S. Naval Observatory and
+  %     the results were similar. You can check it.
+  %     - Trying to do the life... more easy with the conversions.
+  %
+  % 5. Referents:
+  %     Astronomical Applications Department. "Julian Date Converter". From U.S. Naval Observatory.
+  %               http://aa.usno.navy.mil/data/docs/JulianDate.html
+  %     Duffett-Smith, P. (1992).  Practical Astronomy with Your Calculator.
+  %               Cambridge University Press, England:  pp. 9.
+  %     Seidelmann, P. K. (1992). Explanatory Supplement to the Astronomical Almanac.
+  %               University Science Books, USA.  pp. 55-56.
+  %      Weisstein, Eric W.  "Julian Date".  From World of Astronomy--A Wolfram Web Resource.
+  %               http://scienceworld.wolfram.com/astronomy/JulianDate.html
+  %
   narginchk(6, 6)
   timeut = hour + (min / 60) + (sec / 3600);
 
@@ -115,27 +113,22 @@ function [JD, julianday] = greg2julian(year, month, day, hour, min, sec)
 
 end % function
 
-% Convert a modified Julian day to a Matlab datestr style string
-%
-% DESCRIPTION
-%   Convert a modified Julian day to a Matlab datestr style string
-%
-% INPUT
-%    MJD    = modified Julian day
-%    Format = [optical] date format, .e.g 'yyyy-mm-dd HH:MM:SS'
-%
-% OUTPUT
-%    strout = Matlab datestr style string
-%               .e.g '2000-03-01 15:45:17'
-%
-% EXAMPLE USAGE
-%    S = MJUL2STR(time, 'yyyy-mm-dd HH:MM:SS')
-%
-% Author(s)
-%    li12242 (Tianjin University)
-%
-%==========================================================================
 function strout = mjul2str(MJD, varargin)
+  % Convert a modified Julian day to a Matlab datestr style string
+  %
+  % DESCRIPTION
+  %   Convert a modified Julian day to a Matlab datestr style string
+  %
+  % INPUT
+  %    MJD    = modified Julian day
+  %    Format = [optical] date format, .e.g 'yyyy-mm-dd HH:MM:SS'
+  %
+  % OUTPUT
+  %    strout = Matlab datestr style string, .e.g '2000-03-01 15:45:17'
+  %
+  % EXAMPLE USAGE
+  %    S = MJUL2STR(time, 'yyyy-mm-dd HH:MM:SS')
+  %
 
   mjul2matlab = 678942; %difference between modified Julian day 0 and Matlab day 0
 
@@ -152,54 +145,50 @@ function [year, month, day, hour, minu, sec, dayweek, dategreg] = mjulian2greg(M
   [year, month, day, hour, minu, sec, dayweek, dategreg] = julian2greg(MJD + 2400000.5);
 end % function
 
-% This function converts the Julian dates to Gregorian dates.
-%
-% 0. Syntax:
-% [day,month,year,hour,min,sec,dayweek] = julian2greg(JD)
-%
-% 1. Inputs:
-%     JD = Julian date.
-%
-% 2. Outputs:
-%     year, month, day, dayweek = date in Gregorian calendar.
-%     hour, min, sec = time at universal time.
-%
-% 3. Example:
-%  >> [a,b,c,d,e,f,g,h] = julian2greg(2453887.60481)
-%  a =
-%     2006
-%  b =
-%     6
-%  c =
-%     1
-%  d =
-%     2
-%  e =
-%     30
-%  f =
-%     56
-%  g =
-%     Thursday
-%  h =
-%       1     6     2006     2     30     56
-%
-% 4. Notes:
-%     - For all common era (CE) dates in the Gregorian calendar.
-%     - The function was tested, using  the julian date converter of U.S. Naval Observatory and
-%     the results were similar. You can check it.
-%     - Trying to do the life... more easy with the conversions.
-%
-% 5. Referents:
-%     Astronomical Applications Department. "Julian Date Converter". From U.S. Naval Observatory.
-%               http://aa.usno.navy.mil/data/docs/JulianDate.html
-%     Duffett-Smith, P. (1992).  Practical Astronomy with Your Calculator.
-%               Cambridge University Press, England:  pp. 8,9.
-%
-% Gabriel Ruiz Mtz.
-% Jun-2006
-% ____________________________________________________________________________________________
 function [year, month, day, hour, minu, sec, dayweek, dategreg] = julian2greg(JD)
-
+  % This function converts the Julian dates to Gregorian dates.
+  %
+  % 0. Syntax:
+  % [day,month,year,hour,min,sec,dayweek] = julian2greg(JD)
+  %
+  % 1. Inputs:
+  %     JD = Julian date.
+  %
+  % 2. Outputs:
+  %     year, month, day, dayweek = date in Gregorian calendar.
+  %     hour, min, sec = time at universal time.
+  %
+  % 3. Example:
+  %  >> [a,b,c,d,e,f,g,h] = julian2greg(2453887.60481)
+  %  a =
+  %     2006
+  %  b =
+  %     6
+  %  c =
+  %     1
+  %  d =
+  %     2
+  %  e =
+  %     30
+  %  f =
+  %     56
+  %  g =
+  %     Thursday
+  %  h =
+  %       1     6     2006     2     30     56
+  %
+  % 4. Notes:
+  %     - For all common era (CE) dates in the Gregorian calendar.
+  %     - The function was tested, using  the julian date converter of U.S. Naval Observatory and
+  %     the results were similar. You can check it.
+  %     - Trying to do the life... more easy with the conversions.
+  %
+  % 5. Referents:
+  %     Astronomical Applications Department. "Julian Date Converter". From U.S. Naval Observatory.
+  %               http://aa.usno.navy.mil/data/docs/JulianDate.html
+  %     Duffett-Smith, P. (1992).  Practical Astronomy with Your Calculator.
+  %               Cambridge University Press, England:  pp. 8,9.
+  %
   narginchk(1, 1)
 
   I = floor(JD + 0.5);

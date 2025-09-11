@@ -6,19 +6,13 @@ function convert_OTPS_to_netcdf(obj, mopts_obj, opts_file)
   %   class and is used to process and transform data from the OPTS file into
   %   a format suitable for NetCDF storage.
   %
-  %   Inputs:
-  %       obj       - Instance of the MatFVCOM class.
-  %       mopts_obj - Instance of the MatOTPS object.
-  %       opts_file - Output file of OTPS.
+  % :param mopts_obj: Instance of the MatOTPS object.
+  % :param opts_file: Output file of OTPS.
   %
-  %   Outputs:
-  %       None. The function performs the conversion and saves the resulting
-  %       NetCDF file to the appropriate location.
+  % .. code-block:: matlab
+  % 
+  %   obj.convert_OPTS_to_netcdf(mopts_obj, 'path/to/z.out');
   %
-  %   Example:
-  %       obj.convert_OPTS_to_netcdf('path/to/opts_file.opts', 1);
-  %
-  %   See also: OTHER_RELEVANT_FUNCTIONS
 
   % cat all boundary nodes
   obc_list = unique([obj.open_boundary(:).vertex]);

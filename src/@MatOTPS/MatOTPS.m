@@ -17,13 +17,16 @@ classdef MatOTPS < handle
   methods
     function obj = MatOTPS(varargin)
       % MATOTPS Constructor for the MatOTPS class.
-      % This function initializes an instance of the MatOTPS class.
-      % Usage:
+      %  This function initializes an instance of the MatOTPS class.
+      % 
+      %  Usage:
+      % 
+      % .. code-block:: matlab
       %
       %   otps = MatOTPS(lon, lat, mtime_vec);
       %   otps = MatOTPS(lat_lon_file, mtime_vec);
       %   otps = MatOTPS(lat_lon_time_file);
-      %
+      % 
       p = inputParser;
       if nargin == 3
         addRequired(p, 'lon', @(x) isnumeric(x) && isvector(x));

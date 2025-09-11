@@ -1,16 +1,21 @@
-%------------------------------------------------------------------------------
-% write FVCOM input files
-%------------------------------------------------------------------------------
 function write_to_file(obj)
+  % WRITE_TO_FILE Dump MatFVCOM object to FVCOM input files.
+  %
   casename = obj.casename;
   output_folder = pwd;
-  % dump to file
 
   write_depth_file(obj, output_folder, casename);
   write_grid_file(obj, output_folder, casename);
   write_obc_file(obj, output_folder, casename);
   write_cor_file(obj, output_folder, casename);
   write_sigma_file(obj, output_folder, casename, 'Uniform', 10);
+
+  for i = 1:numel(obj.open_boundary)
+    if isempty(obj.open_boundary(i).radius) || isempty(obj.open_boundary(i).coeff)
+      warning('Sponge parameters (radius and coeff) are not set for open boundary %d. Skip writing sponge file.', i);
+      return;
+    end
+  end
   write_sponge_file(obj, output_folder, casename)
 end
 

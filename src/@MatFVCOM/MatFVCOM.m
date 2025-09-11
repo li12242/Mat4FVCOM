@@ -33,11 +33,11 @@ classdef MatFVCOM < handle
     %
     % This function initializes an instance of the MatFVCOM class.
     %
-    % Parameters:
-    %   casename (string): The name of the case or project to be associated
+    % :param casename: The name of the case or project to be associated
     %                      with this instance of the MatFVCOM class.
-    %   varargin (optional): Additional optional arguments that can be
-    %                        passed to customize the initialization.
+    % :param adcirc: (optional) An instance of the MatAdcirc object
+    % :param fvcom: (optional) A folder containing FVCOM input files
+    % :param time: (optional) A structure array with start/end time in mjulian_time
     %
     % Returns:
     %   obj: An instance of the MatFVCOM class.
@@ -102,6 +102,7 @@ classdef MatFVCOM < handle
       %
       % :param start_t: A string representing the start time.
       % :param end_t: A string representing the end time.
+      % 
 
       % check inputs
       if (class(start_t) ~= 'mjulian_time') | (class(end_t) ~= 'mjulian_time')
