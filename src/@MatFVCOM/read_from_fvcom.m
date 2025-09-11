@@ -56,9 +56,9 @@ function [x, y, h, triangle_topology] = read_fvcom_grid_file(grid_file)
 
   % read numbers
   node_line = fgetl(file_h);
-  Ne = sscanf(node_line, 'Node Number = %d');
+  Nv = sscanf(node_line, 'Node Number = %d');
   cell_line = fgetl(file_h);
-  Nv = sscanf(cell_line, 'Cell Number = %d');
+  Ne = sscanf(cell_line, 'Cell Number = %d');
 
   triangle_topology = zeros(Ne, 3);
   data = fscanf(file_h, '%d %d %d %d %d\n', [5, Ne]);

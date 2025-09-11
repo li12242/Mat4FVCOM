@@ -32,10 +32,10 @@ classdef MatFVCOM < handle
     %
     % This function initializes an instance of the MatFVCOM class.
     %
-    % :param casename: The name of the case or project to be associated
-    %                      with this instance of the MatFVCOM class.
+    % :param casename: The name of the test case.
     % :param adcirc: (optional) An instance of the MatAdcirc object
-    % :param fvcom: (optional) A folder containing FVCOM input files
+    % :param fvcom: (optional) A folder containing FVCOM input files, with format of
+    %               {casename}_grd.dat, {casename}_cor.dat, {casename}_obc.dat
     % :param time: (optional) A structure array with start/end time in mjulian_time
     %
     % Returns:

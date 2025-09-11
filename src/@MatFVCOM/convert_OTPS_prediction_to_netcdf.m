@@ -22,7 +22,7 @@ function convert_OTPS_prediction_to_netcdf(obj, mopts_obj, opts_file)
       Nobc, mopts_obj.Nv);
   end
 
-  % read time and elevation
+  % read time and elevation, size [Nt, Nv]
   [time, elevation] = mopts_obj.read_prediction(mopts_obj, opts_file);
   fprintf('Read time from OPTS file %d %d\n', size(time));
   fprintf('Read elevation from OPTS file %d %d\n', size(elevation));
@@ -36,7 +36,9 @@ function convert_OTPS_prediction_to_netcdf(obj, mopts_obj, opts_file)
   nc_out.ncid = netcdf.create(out_file, 'clobber');
   nc_out = write_nc_dimension(obj, nc_out, Nobc, time);
   time = time - time(1); % make time start from 0
-  write_nc_file(nc_out, obc_list, time, elevation);
+
+  % transpose elevation to size [Nobc, Nt]
+  write_nc_file(nc_out, obc_list, time, elevation');
   netcdf.close(nc_out.ncid);
 end % function
 
