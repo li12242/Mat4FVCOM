@@ -10,7 +10,7 @@ function convert_OTPS_to_netcdf(obj, mopts_obj, opts_file)
   % :param opts_file: Output file of OTPS.
   %
   % .. code-block:: matlab
-  % 
+  %
   %   obj.convert_OPTS_to_netcdf(mopts_obj, 'path/to/z.out');
   %
 
@@ -118,28 +118,28 @@ function nc_out = write_nc_dimension(obj, nc_out, Nobn, mtime_vec)
   netcdf.endDef(nc_out.ncid);
 end % function
 
-%WRITE_NC_FILE Write data to a NetCDF file.
-%
-%   This function writes the given data to a NetCDF file. It is designed
-%   to handle output related to open boundary conditions (OBC) and
-%   elevation data over a specified time period.
-%
-%   Parameters:
-%   ----------
-%   nc_out : string
-%       Path to the output NetCDF file.
-%   obc_list : array
-%       List of open boundary condition indices.
-%   time_in_days : array
-%       Time values in days corresponding to the data.
-%   elevation : array
-%       Elevation data to be written to the NetCDF file.
-%
-%   Notes:
-%   -----
-%   Ensure that the input data dimensions are consistent with the
-%   requirements of the NetCDF file structure.
 function write_nc_file(nc_out, obc_list, time_in_days, elevation)
+  %WRITE_NC_FILE Write data to a NetCDF file.
+  %
+  %   This function writes the given data to a NetCDF file. It is designed
+  %   to handle output related to open boundary conditions (OBC) and
+  %   elevation data over a specified time period.
+  %
+  %   Parameters:
+  %   ----------
+  %   nc_out : string
+  %       Path to the output NetCDF file.
+  %   obc_list : array
+  %       List of open boundary condition indices.
+  %   time_in_days : array
+  %       Time values in days corresponding to the data.
+  %   elevation : array
+  %       Elevation data to be written to the NetCDF file.
+  %
+  %   Notes:
+  %   -----
+  %   Ensure that the input data dimensions are consistent with the
+  %   requirements of the NetCDF file structure.
   Ntime = numel(time_in_days);
   netcdf.putVar(nc_out.ncid, nc_out.var_obc, obc_list);
   netcdf.putVar(nc_out.ncid, nc_out.var_iint, 0, Ntime, 1:Ntime);
