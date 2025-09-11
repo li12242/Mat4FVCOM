@@ -1,7 +1,5 @@
 # Mat4FVCOM
 
-## Introduction
-
 Mat4FVCOM project access and manipulate FVCOM model data in MATLAB. The project provides classes to access models such as FVCOM, ADCIRC, OTPS, as well as the date and file formats such as the Modified Julian Time and NetCDF.
 
 ## Feature
